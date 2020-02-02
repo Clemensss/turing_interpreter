@@ -1,0 +1,9 @@
+DEFINE: SUB
+    DIR
+    PRT
+END
+
+               
+MAIN:
+    SUB
+END
