@@ -15,8 +15,8 @@ Pra definir uma subrotina (função) você usa:
 
 As unicas coisas que precisam ser maiusculas sao DEFINE e HALT.
 
-Também tem a funcao do MAIN, eh a mesma coisa q define so que sem nome 
-personalizado, e ela precisa existir senao nao executa nada.
+Também tem a funcao do MAIN, eh a mesma coisa q DEFINE so que sem nome 
+personalizado, e ela precisa existir nada executa.
 		
 	MAIN: 
 		COMANDOS
@@ -32,10 +32,12 @@ Os comando preprogramados, eles sao:
     #mas fora isso eh de boa
 	
     #printar
+    
     PRT: <caracter> 
     
     #scan e goto(ficam sempre na mesma linha)
     #goto comeca do zero
+    
     SCAN: <caracter>, 0
 
     #move a fita pra direita
