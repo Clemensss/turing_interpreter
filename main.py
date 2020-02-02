@@ -133,8 +133,6 @@ def run_sub(name):
         print_fita()
         if i == len(inst_l):
             break
-                
-    print(''.join(fita_turing))
 
 def SCAN(char):
     global index
@@ -167,7 +165,6 @@ def turing():
 
 def main():
     read_file(sys.argv[1])
-
     turing()
 
 if __name__ == "__main__":
