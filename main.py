@@ -1,3 +1,5 @@
+import sys
+
 subroutines = dict()
 fita_turing = ['#' for x in range(100)]
 index = 0
@@ -6,9 +8,8 @@ halt = False
 
 def add_new_sub(content, sub_name, i):
     sub_list = []
-
     while True:
-        if content[i] == "END":
+        if content[i] == "HALT":
             break
         sub_list.append(content[i])
         i+=1
@@ -21,10 +22,10 @@ def make_subroutines(content):
 
     i = 0
     while i < len(content):
-        lista = content[i].split(" ")
+        lista = content[i].split(' ')
 
         if lista[0] == "DEFINE:":
-            i = add_new_sub(content, lista[1], i+1)
+            i = add_new_sub(content, lista[1].strip(), i+1)
         elif lista[0] == "MAIN:":
             i = add_new_sub(content, lista[0], i+1)
         
@@ -75,9 +76,6 @@ def run_preprogramed(inst, name):
         ESQ()
         return False
 
-    elif inst[0] == "HALT":
-        HALT()
-
 def run_sub(name):
     inst_l = subroutines[name]
     i = 0
@@ -100,18 +98,19 @@ def run_sub(name):
             if halt:
                 print("HALT")
                 break
-
-        if ver:
+        
+        
+        print(''.join(fita_turing))
+        if ver and len(inst) > 1:
             i = int(inst[1])
         else:
             i+=1
-
-        print(''.join(fita_turing))
 
         if i == len(inst_l):
             break
                 
 def SCAN(char):
+    global index
     if char == fita_turing[index]:
         return True
     else:
@@ -126,9 +125,10 @@ def HALT():
 
 def DIR():
     global index
+    global fita_turing
     index += 1
-    if index > len(fita_turing):
-        fita_turing + ['#' for x in range(100)]
+    if index == len(fita_turing):
+        fita_turing = fita_turing + ['#' for x in range(100)]
 
 def ESQ():
     global index
@@ -139,7 +139,7 @@ def turing():
     run_sub("MAIN:")
 
 def main():
-    read_file("test")
+    read_file(sys.argv[1])
 
     turing()
     print(''.join(fita_turing))

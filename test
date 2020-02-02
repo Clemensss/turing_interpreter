@@ -1,9 +1,48 @@
-DEFINE: SUB
+DEFINE: BBD
     DIR
-    PRT
-END
+    SCAN I, 0
+HALT
 
-               
+DEFINE: PBE
+    ESQ
+    PRT #
+HALT 
+
+DEFINE: BBE
+    ESQ
+    SCAN I, 0
+HALT
+
+DEFINE: SOMA
+    BBD
+    PRT I
+    BBD
+    PBE
+    PBE
+    BBE
+HALT
+
+DEFINE: ADD_1 
+    DIR
+    PRT I
+HALT
+
+DEFINE: DOIS
+    ADD_1
+    ADD_1
+HALT
+
+
 MAIN:
-    SUB
-END
+    PRT X
+    DOIS
+    DOIS
+    ADD_1
+    DIR
+    DOIS
+    DOIS
+    BBE
+    BBE
+    PRT #
+    SOMA
+HALT
