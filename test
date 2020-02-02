@@ -27,14 +27,13 @@ DEFINE: ADD_1
     PRT: I
 HALT
 
-DEFINE:          DOIS
+DEFINE:  DOIS
     ADD_1
     ADD_1
 HALT
 
 #funcao main 
 MAIN:
-    PRT: X
     DOIS
     DOIS
     ADD_1
@@ -43,6 +42,5 @@ MAIN:
     DOIS
     BBE
     BBE
-    PRT: #
     SOMA
 HALT
