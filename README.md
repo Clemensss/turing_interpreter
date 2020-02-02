@@ -13,9 +13,17 @@ Pra definir uma subrotina (função) você usa:
 		COMANDOS
     HALT
 
-As unicas coisas que precisam ser maiusculas sao DEFINE e HALT
+As unicas coisas que precisam ser maiusculas sao DEFINE e HALT.
 
-Tambem tem os comando preprogramados, eles sao:
+Também tem a funcao do MAIN, eh a mesma coisa q define so que sem nome 
+personalizado, e ela precisa existir senao nao executa nada.
+		
+	MAIN: 
+		COMANDOS
+		COMANDOS
+	HALT
+
+Os comando preprogramados, eles sao:
 		
 	
 
