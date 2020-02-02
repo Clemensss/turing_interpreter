@@ -1,21 +1,21 @@
 DEFINE: BBD
     DIR
-    SCAN I, 0
+    SCAN: I, 0
 HALT
 
 DEFINE: PBE
     ESQ
-    PRT #
+    PRT: #
 HALT 
 
 DEFINE: BBE
     ESQ
-    SCAN I, 0
+    SCAN: I, 0
 HALT
 
 DEFINE: SOMA
     BBD
-    PRT I
+    PRT: I
     BBD
     PBE
     PBE
@@ -24,17 +24,17 @@ HALT
 
 DEFINE: ADD_1 
     DIR
-    PRT I
+    PRT: I
 HALT
 
-DEFINE: DOIS
+DEFINE:          DOIS
     ADD_1
     ADD_1
 HALT
 
-
+#funcao main 
 MAIN:
-    PRT X
+    PRT: X
     DOIS
     DOIS
     ADD_1
@@ -43,6 +43,6 @@ MAIN:
     DOIS
     BBE
     BBE
-    PRT #
+    PRT: #
     SOMA
 HALT
