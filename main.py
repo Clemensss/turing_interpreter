@@ -62,7 +62,11 @@ def read_file(file_name):
     f.close()
 
     make_subroutines(content) 
-
+    
+def print_fita():
+    print(''.join(fita_turing))
+    print(''.join([' ' for x in range(index)])+'^')
+    
 def print_dict(var):
     for x in var:
         print (x)
@@ -126,7 +130,7 @@ def run_sub(name):
             i = int(inst[1])
         else:
             i+=1
-        
+        print_fita()
         if i == len(inst_l):
             break
                 
