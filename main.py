@@ -41,7 +41,14 @@ def make_subroutines(content):
             i = add_new_sub(content, lista[1].strip(), i+1)
         elif lista[0] == "MAIN":
             i = add_new_sub(content, lista[0], i+1)
+        else:
+            print("ERROR: {0} (line: {1}) not a defined keyword".format(lista[0], i))
+            print(">>>> {}".format(':'.join(lista)))
+            HALT()
+            break
         
+        if halt:
+            break
         i+=1
 
 '''
@@ -58,10 +65,9 @@ def read_file(file_name):
     content = [x for x in content if x[0] != '#']
     content = [x.strip() for x in content]
 
-    print(content)
     f.close()
 
-    make_subroutines(content) 
+    return make_subroutines(content) 
     
 def print_fita():
     print(''.join(fita_turing))
@@ -74,31 +80,50 @@ def print_dict(var):
             print (y)
 
 '''roda as funcoes ja preprogramadas'''
-def run_preprogramed(inst, name):
+def run_preprogramed(content, name, i):
+
+    inst = content[0]
+    def exep_preprogramed():
+        print("ERROR: Too many or too few arguments for {0} (line: {1}) in {2}".format(inst[0], i, name))
+        print(">>>> {}".format(', '.join(content)))
+        HALT()
 
     inst = inst.split(':')
     if inst[0] == "SCAN":
+        if len(content) != 2:
+            exep_preprogramed()
+
         if len(inst) != 2:
-            print("ERROR: Too many or too few arguments for SCAN in {}".format(name[:-1]))
-            HALT()
+            exep_preprogramed()
+
         else:
             return SCAN(inst[1])
 
     elif inst[0] == "PRT":
+        if len(content) != 1:
+            exep_preprogramed()
+
         if len(inst) != 2:
-            print("ERROR: Too many or too few arguments for PRT in {}".format(name[:-1]))
-            HALT()
+            exep_preprogramed()
+
         else:
             PRT(inst[1])
-            return False
 
     elif inst[0] == "DIR":
-        DIR()
-        return False
+        if len(inst) > 1:
+            exep_preprogramed()
+
+        else:
+            DIR()
 
     elif inst[0] == "ESQ":
-        ESQ()
-        return False
+        if len(inst) > 1:
+            exep_preprogramed()
+
+        else:
+            ESQ()
+    
+    return False
 '''
    roda uma subrotina qualquer, se dentro da subrotina houver
    outra subrotina definida pelo usuario, a funcao e chamada de
@@ -121,10 +146,15 @@ def run_sub(name):
                 run_sub(inst[0])
             else:
                 print("ERROR: Subroutine {1} (line: {0}) in {2} not defined".format(i, inst[0], name[:-1]))
+                print(">>>> {}".format(', '.join(inst)))
+                HALT()
                 break
 
         else:
-            ver = run_preprogramed(inst[0], name)
+            ver = run_preprogramed(inst, name, i)
+
+        if halt:
+            break
 
         if ver:
             i = int(inst[1])
@@ -161,7 +191,10 @@ def ESQ():
         index -= 1
 
 def turing():
-    run_sub("MAIN")
+    if halt:
+        print("EXECUTION NOT POSSIBLE")
+    else:
+        run_sub("MAIN")
 
 def main():
     read_file(sys.argv[1])
