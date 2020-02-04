@@ -193,6 +193,8 @@ def ESQ():
 def interactive():
     i = 0
 
+    print("--- Interpretador de turing do Paragua ---")
+    print("Made by yours truly (o retardado), Clemens Schrage\n")
     command_list = []
     cmd = True
 

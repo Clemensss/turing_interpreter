@@ -50,7 +50,17 @@ Qualquer coisa tem o arquivo teste pra você ver como funciona.
 
 ## Utilização
 
-Faz assim:
+Faz assim para so rodar main dentro do seu arquivo:
 	
 
     python3 main.py <seu_arquivo>
+
+Assim para rodar o terminal:
+
+
+    python3 main.py 
+
+E assim pra rodar o terminal e carregar as suas subrotinas definidas dentro do arquivo:
+
+
+    python3 main.py -l <seu_arquivo>
