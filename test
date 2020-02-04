@@ -32,6 +32,23 @@ DEFINE:  DOIS
     ADD_1
 HALT
 
+DEFINE: PBD
+    DIR
+    PRT: #
+HALT
+
+DEFINE: CLEAR
+    BBE
+    PRT: X
+    DIR
+    PRT: #
+    DIR
+    SCAN: I, 3     
+    ESQ
+    SCAN: #, 5
+    PRT: #
+HALT
+
 #funcao main 
 MAIN:
     DOIS

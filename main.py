@@ -190,15 +190,69 @@ def ESQ():
     if index != 0:
         index -= 1
 
-def turing():
+def interactive():
+    i = 0
+
+    command_list = []
+    cmd = True
+
+    while True:
+        ver = False 
+
+        if not command_list:
+            cmd = True
+
+        if cmd:
+            inst_l = input("{}>".format(i))
+            inst_l = ''.join(inst_l.split())
+            command_list.append(inst_l)
+        else:
+            inst_l = command_list[i]
+            del command_list[i]
+
+        inst = inst_l.split(",")
+        ver = False
+
+        if inst[0] == "EXIT":
+            print("Exiting...")
+            return
+
+        if inst[0].split(':')[0] not in preprogramed:
+            if inst[0] in subroutines: 
+                run_sub(inst[0])
+            else:
+                print("\nERROR: Subroutine {1} (line: {0}) in {2} not defined\n".format(i, inst[0], "TERMINAL"))
+
+        else:
+            ver = run_preprogramed(inst, "TERMINAL", i)
+
+        if ver:
+            i = int(inst[1])
+            cmd = False
+        else:
+            i+=1
+
+        print_fita()
+
+
+    print("Done")
+
+def turing_main():
     if halt:
         print("EXECUTION NOT POSSIBLE")
     else:
         run_sub("MAIN")
 
 def main():
-    read_file(sys.argv[1])
-    turing()
+    if len(sys.argv) < 2:
+        interactive() 
+    else:
+        if sys.argv[1] == "-l":
+            read_file(sys.argv[2])
+            interactive()
+        else:
+            read_file(sys.argv[1])
+            turing_main()
 
 if __name__ == "__main__":
     main()
