@@ -5,6 +5,7 @@ fita_turing = ['#' for x in range(100)]
 index = 0
 preprogramed = ["SCAN", "PRT", "DIR", "ESQ", "HALT"]
 halt = False
+stop_exe = False
 
 
 '''
@@ -32,7 +33,7 @@ def add_new_sub(content, sub_name, i):
     entre ela e HALT
 '''
 def make_subroutines(content):
-
+    global stop_exe
     i = 0
     while i < len(content):
         lista = content[i].split(':')
@@ -42,12 +43,10 @@ def make_subroutines(content):
         elif lista[0] == "MAIN":
             i = add_new_sub(content, lista[0], i+1)
         else:
-            print("ERROR: {0} (line: {1}) not a defined keyword".format(lista[0], i))
-            print(">>>> {}".format(':'.join(lista)))
-            HALT()
+            exep_handle([], lista[0], i, "", "KEYWORD")
             break
         
-        if halt:
+        if stop_exe:
             break
         i+=1
 
@@ -79,93 +78,102 @@ def print_dict(var):
         for y in var[x]:
             print (y)
 
+
+def exep_handle(cmd_list, cmd_name, line, sub_rot_name, ERROR):
+
+    if ERROR == "ARGUMENTS":
+        print("ERROR: Too many or too few arguments", end = " ")
+        print("{0} (line: {1}) in {2}".format(cmd_name, line, sub_rot_name))
+
+    elif ERROR == "SUB_NOT_DEFINED":
+        print("ERROR: Subroutine {0} (line: {1}) in {2} not defined".format(cmd_name, line, sub_rot_name))
+
+    elif ERROR == "KEYWORD":
+        print("ERROR: {0} (line: {1}) not a defined keyword".format(cmd_name, line))
+
+    print(">>>> {}".format(', '.join(cmd_list)))
+
+    global stop_exe
+    stop_exe = True
+
 '''roda as funcoes ja preprogramadas'''
-def run_preprogramed(content, name, i):
+def run_preprogramed(cmd_line, sub_rot_name, exec_line):
 
-    inst = content[0]
-    def exep_preprogramed():
-        print("ERROR: Too many or too few arguments for {0} (line: {1}) in {2}".format(inst[0], i, name))
-        print(">>>> {}".format(', '.join(content)))
-        HALT()
+    cmd_list = cmd_line.split(",")
+    cmd = cmd_list[0].split(':')
 
-    inst = inst.split(':')
-    if inst[0] == "SCAN":
-        if len(content) != 2:
-            exep_preprogramed()
+    if cmd[0] not in preprogramed:
+        exep_handle(cmd_list, cmd[0], exec_line, sub_rot_name, "SUB_NOT_DEFINED")
 
-        if len(inst) != 2:
-            exep_preprogramed()
+    if cmd[0] == "SCAN":
+        if len(cmd_list) != 2 or len(cmd) != 2:
+            exep_handle(cmd_list, cmd[0], exec_line, sub_rot_name, "ARGUMENTS")
+        else:
+            return SCAN(cmd[1])
+
+    elif cmd[0] == "PRT":
+        if len(cmd_list) != 1 or len(cmd) != 2:
+            exep_handle(cmd_list, cmd[0], exec_line, sub_rot_name, "ARGUMENTS")
 
         else:
-            return SCAN(inst[1])
+            PRT(cmd[1])
 
-    elif inst[0] == "PRT":
-        if len(content) != 1:
-            exep_preprogramed()
-
-        if len(inst) != 2:
-            exep_preprogramed()
-
-        else:
-            PRT(inst[1])
-
-    elif inst[0] == "DIR":
-        if len(inst) > 1:
-            exep_preprogramed()
+    elif cmd[0] == "DIR":
+        if len(cmd) > 1:
+            exep_handle(cmd_list, cmd[0], exec_line, sub_rot_name, "ARGUMENTS")
 
         else:
             DIR()
 
-    elif inst[0] == "ESQ":
-        if len(inst) > 1:
-            exep_preprogramed()
-
+    elif cmd[0] == "ESQ":
+        if len(cmd) > 1:
+            exep_handle(cmd_list, cmd[0], exec_line, sub_rot_name, "ARGUMENTS")
         else:
             ESQ()
-    elif inst[0] == "HALT":
+
+    elif cmd[0] == "HALT":
         HALT()
 
     return False
+
 '''
    roda uma subrotina qualquer, se dentro da subrotina houver
-   outra subrotina definida pelo usuario, a funcao e chamada de
+   outra subrotina definida pelo usuario, a funcao eh chamada
    novo recursivamente, se for uma funcao preprogramada
    vai executar ela normalmente
 
-   i eh o index de comandos, comeca de 0
+   line eh o index de comandos, comeca de 0
 '''
-def run_sub(name):
-    inst_l = subroutines[name]
-    i = 0
+def exec_sub_loop(sub_name):
+    list_commands = subroutines[sub_name]
+    line = 0
     global halt
 
     while True:
-        inst = inst_l[i].split(",")
-        ver = False
+        line = run_sub(list_commands[line], line, sub_name)
 
-        if inst[0].split(':')[0] not in preprogramed:
-            if inst[0] in subroutines: 
-                run_sub(inst[0])
-            else:
-                print("ERROR: Subroutine {1} (line: {0}) in {2} not defined".format(i, inst[0], name[:-1]))
-                print(">>>> {}".format(', '.join(inst)))
-                HALT()
-                break
-
-        else:
-            ver = run_preprogramed(inst, name, i)
+        print_fita()
 
         if halt:
             halt = False
             break
 
-        if ver:
-            i = int(inst[1])
-        else:
-            i+=1
-        print_fita()
-        if i == len(inst_l):
+        if line >= len(list_commands):
             break
+
+def run_sub(cmd, line, sub_name):
+
+    if cmd in subroutines:
+        exec_sub_loop(cmd)
+
+    else:
+        if run_preprogramed(cmd, sub_name, line):
+            return int(cmd.split(",")[1])
+
+    return line + 1
+
+
+        
 
 def SCAN(char):
     global index
@@ -194,59 +202,39 @@ def ESQ():
         index -= 1
 
 def interactive():
-    i = 0
+    line = 0
 
     print("--- Interpretador de turing do Paragua ---")
     print("Made by yours truly (o retardado), Clemens Schrage\n")
     command_list = []
-    cmd = True
+    cmd = False
 
     while True:
-        ver = False 
+        if command_list == []:
+            cmd = False
 
-        if not command_list:
-            cmd = True
-
-        if cmd:
-            inst_l = input("{}>".format(i))
-            inst_l = ''.join(inst_l.split())
-            command_list.append(inst_l)
+        if not cmd:
+            cmd_input = input("{0}>".format(line))
+            cmd_input= ''.join(cmd_input.split())
+            command_list.append(cmd_input)
         else:
-            inst_l = command_list[i]
-            del command_list[i]
+            cmd_input = command_list[line]
+            del command_list[line]
 
-        inst = inst_l.split(",")
-        ver = False
-
-        if inst[0] == "EXIT":
+        if cmd_input == "EXIT":
             print("Exiting...")
             return
 
-        if inst[0].split(':')[0] not in preprogramed:
-            if inst[0] in subroutines: 
-                run_sub(inst[0])
-            else:
-                print("\nERROR: Subroutine {1} (line: {0}) in {2} not defined\n".format(i, inst[0], "TERMINAL"))
-
-        else:
-            ver = run_preprogramed(inst, "TERMINAL", i)
-
-        if ver:
-            i = int(inst[1])
-            cmd = False
-        else:
-            i+=1
-
+        line = run_sub(cmd_input, line, "TERMINAL")
         print_fita()
-
 
     print("Done")
 
 def turing_main():
-    if halt:
+    if stop_exe:
         print("EXECUTION NOT POSSIBLE")
     else:
-        run_sub("MAIN")
+        exec_sub_loop("MAIN")
 
 def main():
     if len(sys.argv) < 2:
