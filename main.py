@@ -156,6 +156,7 @@ def run_sub(name):
             ver = run_preprogramed(inst, name, i)
 
         if halt:
+            halt = False
             break
 
         if ver:

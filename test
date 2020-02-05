@@ -93,20 +93,28 @@ END
 
 DEFINE: trans
     DIR
-    SCAN I, 3
+    SCAN: I, 3
 
     HALT
 
-    PRT: M
     DIR 
-    SCAN I, 0
+    PRT: M
+    DIR
+    SCAN: I, 1
     
     HALT
 END
 
+DEFINE: check_par
+    trans
+    BBE
+ END   
     
 #funcao main 
 MAIN:
     DOIS
     DOIS
+    BBE
+    trans
+    BBE 
 END
