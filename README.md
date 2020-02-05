@@ -11,9 +11,9 @@ Pra definir uma subrotina (função) você usa:
     DEFINE: <nome da sua funcao>
 		COMANDOS
 		COMANDOS
-    HALT
+    END
 
-As unicas coisas que precisam ser maiusculas sao DEFINE e HALT.
+As unicas coisas que precisam ser maiusculas sao DEFINE e END.
 
 Também tem a funcao do MAIN, eh a mesma coisa q DEFINE so que sem nome 
 personalizado, e ela precisa existir nada executa.
@@ -21,7 +21,7 @@ personalizado, e ela precisa existir nada executa.
 	MAIN: 
 		COMANDOS
 		COMANDOS
-	HALT
+	END
 
 Os comando preprogramados, eles sao:
 		
@@ -45,6 +45,9 @@ Os comando preprogramados, eles sao:
 	
     #move a fita pra esquerda
     ESQ 
+
+    #para o programa
+    HALT
 
 Qualquer coisa tem o arquivo teste pra você ver como funciona.
 

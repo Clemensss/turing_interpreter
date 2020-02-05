@@ -16,7 +16,7 @@ halt = False
 def add_new_sub(content, sub_name, i):
     sub_list = []
     while True:
-        if content[i] == "HALT":
+        if content[i] == "END":
             break
         sub_list.append(''.join(content[i].split()))
         i+=1
@@ -62,8 +62,8 @@ def read_file(file_name):
 
     content = f.read().splitlines()
     content = [x for x in content if x.strip()]
-    content = [x for x in content if x[0] != '#']
     content = [x.strip() for x in content]
+    content = [x for x in content if x[0] != '#']
 
     f.close()
 
@@ -122,7 +122,9 @@ def run_preprogramed(content, name, i):
 
         else:
             ESQ()
-    
+    elif inst[0] == "HALT":
+        HALT()
+
     return False
 '''
    roda uma subrotina qualquer, se dentro da subrotina houver

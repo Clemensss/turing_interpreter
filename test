@@ -1,17 +1,17 @@
 DEFINE: BBD
     DIR
     SCAN: I, 0
-HALT
+END
 
 DEFINE: PBE
     ESQ
     PRT: #
-HALT 
+END 
 
 DEFINE: BBE
     ESQ
     SCAN: I, 0
-HALT
+END
 
 DEFINE: SOMA
     BBD
@@ -20,24 +20,24 @@ DEFINE: SOMA
     PBE
     PBE
     BBE
-HALT
+END
 
 DEFINE: ADD_1 
-    DIR
+    BBD
     PRT: I
-HALT
+END
 
 DEFINE:  DOIS
     ADD_1
     ADD_1
-HALT
+END
 
 DEFINE: PBD
     DIR
     PRT: #
-HALT
+END
 
-DEFINE: CLEAR
+DEFINE: CLEAR 
     BBE
     PRT: X
     DIR
@@ -47,17 +47,66 @@ DEFINE: CLEAR
     ESQ
     SCAN: #, 5
     PRT: #
-HALT
+END
 
+DEFINE: COPIAR
+    DIR
+    PRT: M
+    BBD
+    BBD
+    PRT: I
+    BBE
+    BBE
+    PRT: I
+    DIR
+    SCAN: I, 1
+END
+
+DEFINE: soma_3
+    BBD
+    PRT:I    
+    BBD
+    PRT: I
+    BBD
+    PBE
+    PBE
+    PBE
+    PBE
+    BBE 
+END
+
+DEFINE: mult_3
+    COPIAR
+    COPIAR
+
+    BBE
+    BBE
+
+    soma_3
+END
+
+DEFINE: 3n+1
+    BBE
+    mult_3
+    ADD_1
+END
+
+DEFINE: trans
+    DIR
+    SCAN I, 3
+
+    HALT
+
+    PRT: M
+    DIR 
+    SCAN I, 0
+    
+    HALT
+END
+
+    
 #funcao main 
 MAIN:
     DOIS
     DOIS
-    ADD_1
-    DIR
-    DOIS
-    DOIS
-    BBE
-    BBE
-    SOMA
-HALT
+END
